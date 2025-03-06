@@ -14,7 +14,12 @@ export const createServer = (): Express => {
   app
     .disable("x-powered-by")
     .use(morgan("dev"))
-    .use(cors())
+    .use(
+      cors({
+        origin: "https://support-ticketing-system-h65b.vercel.app",
+        credentials: true,
+      })
+    )
     .use(express.json())
     .use(express.urlencoded({ extended: true }))
     .use(cookieParser());
