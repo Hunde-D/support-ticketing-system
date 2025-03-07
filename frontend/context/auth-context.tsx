@@ -58,7 +58,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("Logging in...");
       await queryClient.invalidateQueries({ queryKey: ["user"] });
       console.log("Redirecting to /");
+      console.log("Before redirect:", router);
       router.replace("/");
+      console.log("After redirect");
     } else {
       throw new Error("Invalid email or password");
     }
