@@ -61,7 +61,7 @@ const Filters = () => {
       </div>
       <div className="flex gap-3">
         <AddNew />
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
       </div>
     </div>
   );
