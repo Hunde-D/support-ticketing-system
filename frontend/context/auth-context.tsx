@@ -44,7 +44,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return { ...user, avatar: getAvatarUrl(user.email) };
     },
     staleTime: 1000 * 60 * 5,
-    retry: false,
   });
 
   const login = async (email: string, password: string) => {
@@ -56,8 +55,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     if (res.ok) {
-      queryClient.invalidateQueries({ queryKey: ["user"] }); // Refetch user
-      router.push("/");
+      console.log("Logging in...");
+      await queryClient.invalidateQueries({ queryKey: ["user"] });
+      console.log("Redirecting to /");
+      router.replace("/");
     } else {
       throw new Error("Invalid email or password");
     }
