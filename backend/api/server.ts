@@ -16,7 +16,10 @@ export const createServer = (): Express => {
     .use(morgan("dev"))
     .use(
       cors({
-        origin: "https://support-ticketing-system-h65b.vercel.app",
+        origin: [
+          "https://support-ticketing-system-h65b.vercel.app",
+          "http://localhost:3000",
+        ],
         credentials: true,
       })
     )
