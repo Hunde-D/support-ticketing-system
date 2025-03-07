@@ -9,7 +9,7 @@ import {
 import { AddNew } from "./new-ticket-dialog";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-import { ThemeToggle } from "./theme-toggle";
+// import { ThemeToggle } from "./theme-toggle";
 
 const Filters = () => {
   const searchParams = useSearchParams();

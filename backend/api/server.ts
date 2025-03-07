@@ -1,4 +1,3 @@
-import { helmet } from "helmet";
 import express, { Express } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -17,11 +16,7 @@ export const createServer = (): Express => {
     .use(morgan("dev"))
     .use(
       cors({
-        origin: [
-          "https://support-ticketing-system-h65b.vercel.app",
-          "https://support-ticketing-system-web.onrender.com",
-          "http://localhost:3000",
-        ],
+        origin: "https://support-ticketing-system-h65b.vercel.app",
         credentials: true,
       })
     )
