@@ -1,7 +1,7 @@
 import { helmet } from "helmet";
 import express, { Express } from "express";
 import cors from "cors";
-import path from "path";
+import helmet from "helmet";
 import createError from "http-errors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
@@ -25,6 +25,7 @@ export const createServer = (): Express => {
         credentials: true,
       })
     )
+    .use(helmet())
     .use(express.json())
     .use(helmet())
     .use(express.urlencoded({ extended: true }))
