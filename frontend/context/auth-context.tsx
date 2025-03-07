@@ -28,6 +28,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const router = useRouter();
   const queryClient = getQueryClient();
 
@@ -54,16 +55,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       credentials: "include",
     });
 
-    if (res.ok) {
-      console.log("Logging in...");
-      await queryClient.invalidateQueries({ queryKey: ["user"] });
-      console.log("Redirecting to /");
-      console.log("Before redirect:", router);
-      router.replace("/");
-      console.log("After redirect");
-    } else {
+    if (!res.ok) {
       throw new Error("Invalid email or password");
     }
+    console.log("Logging in...");
+    await queryClient.invalidateQueries({ queryKey: ["user"] });
+    console.log("Redirecting to /");
+    console.log("Before redirect:", router);
+    router.replace(`${baseUrl}/`);
+    console.log("After redirect");
   };
 
   const signup = async (userData: {
