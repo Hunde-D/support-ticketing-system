@@ -4,7 +4,7 @@ import path from "path";
 import createError from "http-errors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
-
+import indexRouter from "./routes/index";
 import authRouter from "./routes/authRoutes";
 import ticketRouter from "./routes/ticketRoutes";
 
@@ -25,9 +25,7 @@ export const createServer = (): Express => {
     .use(cookieParser());
 
   // routes
-  app.use("/", (req, res) => {
-    res.json({ message: "Welcome to Express" });
-  });
+  app.use("/", indexRouter);
   app.use("/api/auth", authRouter);
   app.use("/api", ticketRouter);
 
