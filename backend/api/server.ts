@@ -18,6 +18,7 @@ export const createServer = (): Express => {
       cors({
         origin: [
           "https://support-ticketing-system-h65b.vercel.app",
+          "https://support-ticketing-system-web.onrender.com",
           "http://localhost:3000",
         ],
         credentials: true,
