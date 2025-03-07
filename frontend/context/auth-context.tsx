@@ -15,7 +15,6 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
   signup: (userData: {
     email: string;
     password: string;
@@ -28,7 +27,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const router = useRouter();
   const queryClient = getQueryClient();
 
@@ -46,25 +44,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     },
     staleTime: 1000 * 60 * 5,
   });
-
-  const login = async (email: string, password: string) => {
-    const res = await fetch(`${apiUrl}/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-      credentials: "include",
-    });
-
-    if (!res.ok) {
-      throw new Error("Invalid email or password");
-    }
-    console.log("Logging in...");
-    await queryClient.invalidateQueries({ queryKey: ["user"] });
-    console.log("Redirecting to /");
-    console.log("Before redirect:", router);
-    router.replace(`${baseUrl}/`);
-    console.log("After redirect");
-  };
 
   const signup = async (userData: {
     email: string;
@@ -98,7 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user: user || null, isLoading, login, logout, signup }}
+      value={{ user: user || null, isLoading, logout, signup }}
     >
       {children}
     </AuthContext.Provider>

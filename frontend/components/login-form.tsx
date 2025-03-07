@@ -22,11 +22,11 @@ import { PasswordInput } from "./ui/password-input";
 import { Loader2 } from "lucide-react";
 // import { useRouter } from "next/navigation";
 // import { loginUser } from "@/actions/auth-actions";
-import { useAuth } from "@/context/auth-context";
+// import { useAuth } from "@/context/auth-context";
+import { loginUser } from "@/actions/server-ticket-action";
 
 export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
   // const router = useRouter();
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -41,7 +41,7 @@ export const LoginForm = () => {
     if (isLoading) return;
     setIsLoading(true);
     try {
-      await login(values.email, values.password);
+      await loginUser(values.email, values.password);
       toast.success("Login successful!");
     } catch (error) {
       console.error("Login error:", error);
