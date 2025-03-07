@@ -34,6 +34,8 @@ export const signup = async (req: Request, res: Response) => {
         secure: true,
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
+        domain: "support-ticketing-system-h65b.vercel.app",
+        path: "/",
       });
 
       res.status(201).json({
@@ -76,6 +78,8 @@ export const login = async (req: Request, res: Response) => {
       secure: true,
       sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
+      domain: "support-ticketing-system-h65b.vercel.app",
+      path: "/",
     });
 
     res.json({
@@ -94,6 +98,8 @@ export const logout = (req: Request, res: Response) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "none",
+    domain: "support-ticketing-system-h65b.vercel.app",
+    path: "/",
   });
 
   res.status(200).send("Logged out successfully.");
