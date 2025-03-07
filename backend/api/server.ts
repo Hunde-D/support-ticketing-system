@@ -1,3 +1,4 @@
+import { helmet } from "helmet";
 import express, { Express } from "express";
 import cors from "cors";
 import path from "path";
@@ -18,12 +19,14 @@ export const createServer = (): Express => {
       cors({
         origin: [
           "https://support-ticketing-system-h65b.vercel.app",
+          "https://support-ticketing-system-web.onrender.com",
           "http://localhost:3000",
         ],
         credentials: true,
       })
     )
     .use(express.json())
+    .use(helmet())
     .use(express.urlencoded({ extended: true }))
     .use(cookieParser());
 
