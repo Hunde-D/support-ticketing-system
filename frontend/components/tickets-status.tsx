@@ -1,7 +1,7 @@
 "use client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Card } from "./ui/card";
-import { getTickets } from "@/actions/server-ticket-action";
+import { getTickets } from "@/actions/server-action";
 import { Ticket } from "@/lib/types";
 
 const TicketStatus = () => {

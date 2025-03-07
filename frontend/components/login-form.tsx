@@ -20,14 +20,15 @@ import type { z } from "zod";
 import { toast } from "sonner";
 import { PasswordInput } from "./ui/password-input";
 import { Loader2 } from "lucide-react";
-// import { useRouter } from "next/navigation";
+import { login } from "@/actions/server-action";
+import { useRouter } from "next/navigation";
 // import { loginUser } from "@/actions/auth-actions";
-import { useAuth } from "@/context/auth-context";
+// import { useAuth } from "@/context/auth-context";
 
 export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
-  // const router = useRouter();
+  // const { login } = useAuth();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -43,6 +44,7 @@ export const LoginForm = () => {
     try {
       await login(values.email, values.password);
       toast.success("Login successful!");
+      router.push("/");
     } catch (error) {
       console.error("Login error:", error);
       toast.error(

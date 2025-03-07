@@ -27,20 +27,9 @@ export const signup = async (req: Request, res: Response) => {
     });
 
     if (user) {
-      const token = generateToken(user.id as string, user.role);
+      const token = generateToken(user.id as string, user.role, user.email);
 
-      res.cookie("support_ticket", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 24 * 60 * 60 * 1000,
-      });
-
-      res.status(201).json({
-        _id: user.id,
-        email: user.email,
-        role: user.role,
-      });
+      res.status(201).json({ token });
     } else {
       res.status(400).send("Invalid user data");
     }
@@ -69,34 +58,13 @@ export const login = async (req: Request, res: Response) => {
     if (!isMatch) {
       return res.status(401).send("Invalid email or password");
     }
-    const token = generateToken(user.id as string, user.role);
+    const token = generateToken(user.id as string, user.role, user.email);
 
-    res.cookie("support_ticket", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
-
-    res.json({
-      _id: user.id,
-      email: user.email,
-      role: user.role,
-    });
+    res.json({ token });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).send("Server error. Please try again later.");
   }
-};
-
-export const logout = (req: Request, res: Response) => {
-  res.clearCookie("support_ticket", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-  });
-
-  res.status(200).send("Logged out successfully.");
 };
 
 export const currentUser = async (

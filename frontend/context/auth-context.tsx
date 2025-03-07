@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getAvatarUrl } from "@/lib/utils";
 import { getQueryClient } from "@/lib/query-client/get-query-client";
+import { useLocalStorage } from "usehooks-ts";
 
 interface User {
   _id: string;
@@ -28,6 +29,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [token, setToken, removeToken] = useLocalStorage("ticket-token", "");
   const router = useRouter();
   const queryClient = getQueryClient();
 
@@ -36,7 +38,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     queryFn: async () => {
       const res = await fetch(`${apiUrl}/api/auth/me`, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         credentials: "include",
       });
       if (!res.ok) throw new Error("User session expired");
@@ -56,6 +61,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     if (res.ok) {
+      const { token } = await res.json();
+      setToken(token);
       queryClient.invalidateQueries({ queryKey: ["user"] }); // Refetch user
       router.push("/");
     } else {
@@ -84,11 +91,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    await fetch(`${apiUrl}/api/auth/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-
+    removeToken();
     queryClient.invalidateQueries({ queryKey: ["user"] }); // Clear cached user
     router.push("/login");
   };

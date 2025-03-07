@@ -8,6 +8,7 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = protectedRoutes.includes(path);
   const sessionCookie = (await cookies()).get("support_ticket")?.value; // Get the specific cookie
   if (isProtectedRoute && !sessionCookie) {
+    console.log("Redirecting to login");
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
