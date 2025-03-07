@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getAvatarUrl } from "@/lib/utils";
 import { getQueryClient } from "@/lib/query-client/get-query-client";
+import { loginUser } from "@/actions/server-ticket-action";
 
 interface User {
   _id: string;
@@ -28,7 +29,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const router = useRouter();
   const queryClient = getQueryClient();
 
@@ -48,22 +48,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   const login = async (email: string, password: string) => {
-    const res = await fetch(`${apiUrl}/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-      credentials: "include",
-    });
+    const res = await loginUser(email, password);
 
     if (!res.ok) {
       throw new Error("Invalid email or password");
     }
-    console.log("Logging in...");
     await queryClient.invalidateQueries({ queryKey: ["user"] });
-    console.log("Redirecting to /");
-    console.log("Before redirect:", router);
-    router.replace(`${baseUrl}/`);
-    console.log("After redirect");
+    router.push("/");
   };
 
   const signup = async (userData: {
