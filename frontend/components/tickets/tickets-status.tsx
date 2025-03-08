@@ -1,23 +1,9 @@
 "use client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useTickets } from "@/hooks/useTickets";
 import { Card } from "../ui/card";
-import { getTickets } from "@/actions/ticket-action";
-import { Ticket } from "@/lib/types";
 
 const TicketStatus = () => {
-  const { data: tickets } = useSuspenseQuery({
-    queryKey: ["tickets"],
-    queryFn: getTickets,
-  });
-  const openCount = tickets.filter(
-    (ticket: Ticket) => ticket.status.toLowerCase() === "open"
-  ).length;
-  const inProgressCount = tickets.filter(
-    (ticket: Ticket) => ticket.status.toLowerCase() === "in-progress"
-  ).length;
-  const closedCount = tickets.filter(
-    (ticket: Ticket) => ticket.status.toLowerCase() === "closed"
-  ).length;
+  const { openCount, inProgressCount, closedCount } = useTickets();
 
   return (
     <Card className="rounded-lg border-none shadow-none max-sm:hidden p-6">
