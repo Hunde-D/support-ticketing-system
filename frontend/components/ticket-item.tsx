@@ -3,12 +3,11 @@ import { Fragment, useState } from "react";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { Badge } from "./ui/badge";
 import { Card, CardContent } from "./ui/card";
-import { getTickets } from "@/actions/server-ticket-action";
+import { getTickets, updateTicket } from "@/actions/server-ticket-action";
 import { Ticket } from "@/lib/types";
 import { TicketDialog } from "./ticket-dialog";
 import { toast } from "sonner";
 import { getQueryClient } from "@/lib/query-client/get-query-client";
-import { updateTicket } from "@/actions/client-ticket-action";
 import { useSearchParams } from "next/navigation"; // Import useSearchParams
 import { getCategoryColor } from "@/lib/utils";
 
@@ -30,11 +29,12 @@ const TicketItem = () => {
     return ticket.status.toLowerCase() === status.toLowerCase();
   });
 
-  const { mutate: mutateTicket } = useMutation({
+  const { mutateAsync: mutateTicket } = useMutation({
     mutationFn: updateTicket,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tickets"] });
       toast.success("Support ticket updated successfully!");
+      setIsDialogOpen(false);
     },
   });
 
@@ -60,7 +60,9 @@ const TicketItem = () => {
                       className="rounded-full gap-1.5 py-1 "
                     >
                       <span
-                        className={`size-1.5 rounded-full ${getCategoryColor(ticket.status)}`}
+                        className={`size-1.5 rounded-full ${getCategoryColor(
+                          ticket.status
+                        )}`}
                         aria-hidden="true"
                       ></span>
                       <span className="capitalize">{ticket.status}</span>

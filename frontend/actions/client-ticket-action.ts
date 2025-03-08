@@ -1,3 +1,5 @@
+import { getToken } from "./server-ticket-action";
+
 export const updateTicket = async ({
   id,
   status,
@@ -6,10 +8,12 @@ export const updateTicket = async ({
   status: string;
 }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const token = await getToken();
   const response = await fetch(`${apiUrl}/api/tickets/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json", // Explicitly set Content-Type
+      Authorization: `Bearer ${token}`,
     },
     credentials: "include",
     body: JSON.stringify({ status: status }),

@@ -28,10 +28,7 @@ export type Ticket = {
   title: string;
   description: string;
   status: string;
-  user: {
-    email: string;
-    _id: string;
-  };
+  user: string;
   createdAt: string;
   updatedAt: string;
   _id: string;

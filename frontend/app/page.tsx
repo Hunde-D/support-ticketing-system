@@ -8,7 +8,8 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 
 export default async function TicketPage() {
-  // const tickets = await getTickets();
+  const tickets = await getTickets();
+  console.log("tickets", tickets);
   const queryClient = getQueryClient();
 
   // look ma, no await

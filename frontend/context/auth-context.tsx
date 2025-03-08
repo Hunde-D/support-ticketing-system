@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getAvatarUrl } from "@/lib/utils";
 import { getQueryClient } from "@/lib/query-client/get-query-client";
+import { getToken } from "@/actions/server-ticket-action";
 
 interface User {
   _id: string;
@@ -34,9 +35,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: user, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
+      const token = await getToken();
       const res = await fetch(`${apiUrl}/api/auth/me`, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         credentials: "include",
       });
       if (!res.ok) throw new Error("User session expired");

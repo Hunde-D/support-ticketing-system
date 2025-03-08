@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { CalendarIcon, Clock, User } from "lucide-react";
+import { CalendarIcon, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Ticket } from "@/lib/types";
 import { formatDate, formatTime } from "@/lib/utils";
+import { useAuth } from "@/context/auth-context";
 interface TicketDialogProps {
   ticket: Ticket;
   open: boolean;
@@ -35,15 +36,15 @@ export function TicketDialog({
   onSaveAction,
 }: TicketDialogProps) {
   const [editedTicket, setEditedTicket] = useState<Ticket>({ ...ticket });
+  const { user } = useAuth();
 
   const handleSave = () => {
     onSaveAction({ id: editedTicket._id, status: editedTicket.status });
-    onChangeAction(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={onChangeAction}>
-      <DialogContent className="max-w-2xl text-white">
+      <DialogContent className="max-w-2x">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
             Ticket Details
@@ -53,32 +54,23 @@ export function TicketDialog({
         <div className="grid gap-6 py-4">
           <div className="grid gap-4 rounded-md  p-4">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-gray-400">
-                Ticket ID:
-              </span>
-              <span className="text-sm text-gray-300">{editedTicket._id}</span>
+              <span className="text-sm font-semibold">Ticket ID:</span>
+              <span className="text-sm">{editedTicket._id}</span>
             </div>
 
             <div className="flex flex-wrap gap-4">
               <div className="flex items-center gap-2">
-                <CalendarIcon className="h-4 w-4 text-gray-400" />
-                <span className="text-sm text-gray-400">
+                <CalendarIcon className="h-4 w-4" />
+                <span className="text-sm">
                   Created: {formatDate(editedTicket.createdAt)}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-gray-400" />
-                <span className="text-sm text-gray-400">
+                <Clock className="h-4 w-4" />
+                <span className="text-sm">
                   Time: {formatTime(editedTicket.createdAt)}
                 </span>
               </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-gray-400" />
-              <span className="text-sm text-gray-400">
-                {editedTicket.user?.email}
-              </span>
             </div>
           </div>
 
@@ -87,6 +79,7 @@ export function TicketDialog({
               <Label htmlFor="status">Status</Label>
               <Select
                 value={editedTicket.status}
+                disabled={user?.role !== "admin"}
                 onValueChange={(value) =>
                   setEditedTicket({ ...editedTicket, status: value })
                 }
@@ -151,7 +144,7 @@ export function TicketDialog({
 
             <div className="grid gap-2">
               <Label htmlFor="updated">Last Updated</Label>
-              <div className="rounded-md  p-2 text-sm text-gray-400">
+              <div className="rounded-md  p-2 text-sm">
                 {formatDate(editedTicket.updatedAt)} at{" "}
                 {formatTime(editedTicket.updatedAt)}
               </div>

@@ -27,32 +27,7 @@ import {
 } from "./ui/form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ticketSchema } from "@/lib/types";
-
-async function createTicket({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
-  const response = await fetch(`${apiUrl}/api/tickets`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ title, description }),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => null);
-    throw new Error(errorData?.message || "Failed to create ticket");
-  }
-
-  return response.json();
-}
+import { createTicket } from "@/actions/server-ticket-action";
 
 function AddNew() {
   const [open, setOpen] = useState(false);
@@ -66,7 +41,7 @@ function AddNew() {
     },
   });
 
-  const mutation = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: createTicket,
     onSuccess: () => {
       toast.success("Support ticket created successfully!");
@@ -85,7 +60,7 @@ function AddNew() {
   });
 
   const onSubmit = (values: z.infer<typeof ticketSchema>) => {
-    mutation.mutate(values);
+    mutateAsync(values);
   };
 
   return (
@@ -118,7 +93,7 @@ function AddNew() {
                   <FormControl>
                     <Input
                       placeholder="Brief description of your issue"
-                      disabled={mutation.isPending}
+                      disabled={isPending}
                       {...field}
                     />
                   </FormControl>
@@ -137,7 +112,7 @@ function AddNew() {
                     <Textarea
                       placeholder="Please provide details about your issue"
                       rows={4}
-                      disabled={mutation.isPending}
+                      disabled={isPending}
                       {...field}
                     />
                   </FormControl>
@@ -150,10 +125,10 @@ function AddNew() {
               <Button
                 type="submit"
                 className="rounded-md bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:opacity-90"
-                disabled={mutation.isPending}
+                disabled={isPending}
                 aria-live="polite"
               >
-                {mutation.isPending ? (
+                {isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     <span>Creating ticket...</span>
