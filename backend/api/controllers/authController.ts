@@ -36,11 +36,7 @@ export const signup = async (req: Request, res: Response) => {
         maxAge: 24 * 60 * 60 * 1000,
       });
 
-      res.status(201).json({
-        _id: user.id,
-        email: user.email,
-        role: user.role,
-      });
+      res.status(201).json({ token });
     } else {
       res.status(400).send("Invalid user data");
     }
@@ -78,11 +74,7 @@ export const login = async (req: Request, res: Response) => {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    res.json({
-      _id: user.id,
-      email: user.email,
-      role: user.role,
-    });
+    res.json({ token });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).send("Server error. Please try again later.");

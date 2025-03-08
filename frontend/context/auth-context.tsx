@@ -15,13 +15,12 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  // login: (email: string, password: string) => Promise<void>;
   signup: (userData: {
     email: string;
     password: string;
     role: "user" | "admin";
   }) => Promise<void>;
-  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -46,26 +45,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     staleTime: 1000 * 60 * 5,
   });
 
-  const login = async (email: string, password: string) => {
-    const res = await fetch(`${apiUrl}/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-      credentials: "include",
-    });
-
-    if (res.ok) {
-      console.log("Logging in...");
-      await queryClient.invalidateQueries({ queryKey: ["user"] });
-      console.log("Redirecting to /");
-      console.log("Before redirect:", router);
-      router.replace("/");
-      console.log("After redirect");
-    } else {
-      throw new Error("Invalid email or password");
-    }
-  };
-
   const signup = async (userData: {
     email: string;
     password: string;
@@ -86,20 +65,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const logout = async () => {
-    await fetch(`${apiUrl}/api/auth/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    queryClient.invalidateQueries({ queryKey: ["user"] }); // Clear cached user
-    router.push("/login");
-  };
-
   return (
-    <AuthContext.Provider
-      value={{ user: user || null, isLoading, login, logout, signup }}
-    >
+    <AuthContext.Provider value={{ user: user || null, isLoading, signup }}>
       {children}
     </AuthContext.Provider>
   );

@@ -5,7 +5,6 @@ import TicketItem from "@/components/ticket-item";
 import TicketStatus from "@/components/tickets-status";
 import { getQueryClient } from "@/lib/query-client/get-query-client";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
 
 export default async function TicketPage() {
   // const tickets = await getTickets();
@@ -25,19 +24,13 @@ export default async function TicketPage() {
             <h1 className="text-lg font-bold">Support Ticketing System</h1>
             <p className="text-sm opacity-90">Ticket Board</p>
           </div>
-          <Suspense fallback={<div>loading</div>}>
-            <TicketStatus />
-          </Suspense>
+          <TicketStatus />
         </div>
         <div className="grid content-start space-y-4 h-full overflow-hidden">
           <Header />
-          <Suspense fallback={<div>loading</div>}>
-            <Filters />
-          </Suspense>
+          <Filters />
           <div className=" h-full overflow-y-auto  grid gap-4">
-            <Suspense fallback={<div>loading</div>}>
-              <TicketItem />
-            </Suspense>
+            <TicketItem />
           </div>
         </div>
       </div>
