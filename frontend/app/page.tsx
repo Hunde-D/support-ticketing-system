@@ -1,6 +1,7 @@
 import { getTickets } from "@/actions/ticket-action";
 import Filters from "@/components/filters";
 import Header from "@/components/header";
+import { MobileMenu } from "@/components/mobile-menu";
 import TicketItem from "@/components/ticket-item";
 import TicketStatus from "@/components/tickets-status";
 import { getQueryClient } from "@/lib/query-client/get-query-client";
@@ -20,8 +21,13 @@ export default async function TicketPage() {
       <div className="h-screen mx-auto container grid content-start md:gap-6 md:flex p-5">
         <div className="space-y-6">
           <div className="rounded-lg bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400 p-6 text-white">
-            <h1 className="text-lg font-bold">Support Ticketing System</h1>
-            <p className="text-sm opacity-90">Ticket Board</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-lg font-bold">Support Ticketing System</h1>
+                <p className="text-sm opacity-90">Ticket Board</p>
+              </div>
+              <MobileMenu />
+            </div>
           </div>
           <Suspense fallback={<div>loading</div>}>
             <TicketStatus />
