@@ -1,12 +1,15 @@
 "use client";
 import LogoutButton from "./logout";
-import { useAuth } from "@/context/auth-context";
 import UserAvatar from "./user-avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getUser } from "@/actions/auth-action";
+import { useQuery } from "@tanstack/react-query";
 
 const Header = () => {
-  const { user, isLoading } = useAuth();
-
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
+  });
   return (
     <div className="flex items-center justify-between rounded-lg bg-gray-800 p-4 text-white h-24 max-sm:hidden">
       <div className="flex items-center gap-4">

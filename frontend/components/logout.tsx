@@ -4,22 +4,16 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { LogOut, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-// import { useAuth } from "@/context/auth-context";
-import { logout } from "@/actions/server-ticket-action";
+import { logout } from "@/actions/auth-action";
 
 function LogoutButton() {
   const [isLoading, setIsLoading] = useState(false);
-  // const { logout } = useAuth();
 
   const handleLogout = async () => {
     if (isLoading) return;
     setIsLoading(true);
-    const res = await logout();
-    if (!res) {
-      toast.error("logout failed");
-    } else {
-      toast.success("logged out");
-    }
+    await logout();
+    toast.success("logged out");
     setIsLoading(false);
   };
   return (

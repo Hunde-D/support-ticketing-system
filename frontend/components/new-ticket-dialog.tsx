@@ -27,7 +27,7 @@ import {
 } from "./ui/form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ticketSchema } from "@/lib/types";
-import { createTicket } from "@/actions/server-ticket-action";
+import { createTicket } from "@/actions/ticket-action";
 
 function AddNew() {
   const [open, setOpen] = useState(false);

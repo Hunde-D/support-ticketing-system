@@ -1,4 +1,4 @@
-import { getTickets } from "@/actions/server-ticket-action";
+import { getTickets } from "@/actions/ticket-action";
 import Filters from "@/components/filters";
 import Header from "@/components/header";
 import TicketItem from "@/components/ticket-item";
@@ -8,11 +8,8 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 
 export default async function TicketPage() {
-  const tickets = await getTickets();
-  console.log("tickets", tickets);
   const queryClient = getQueryClient();
 
-  // look ma, no await
   queryClient.prefetchQuery({
     queryKey: ["tickets"],
     queryFn: getTickets,
@@ -31,7 +28,9 @@ export default async function TicketPage() {
           </Suspense>
         </div>
         <div className="grid content-start space-y-4 h-full overflow-hidden">
+          {/* <Suspense fallback={<div>loading</div>}> */}
           <Header />
+          {/* </Suspense> */}
           <Suspense fallback={<div>loading</div>}>
             <Filters />
           </Suspense>

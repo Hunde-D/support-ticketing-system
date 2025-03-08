@@ -29,7 +29,7 @@ export const signup = async (req: Request, res: Response) => {
     if (user) {
       const token = generateToken(user.id as string, user.role);
 
-      res.status(201).json({ token });
+      res.status(201).json({ token, user });
     } else {
       res.status(400).send("Invalid user data");
     }
@@ -60,7 +60,7 @@ export const login = async (req: Request, res: Response) => {
     }
     const token = generateToken(user.id as string, user.role);
 
-    res.json({ token });
+    res.json({ token, user });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).send("Server error. Please try again later.");
