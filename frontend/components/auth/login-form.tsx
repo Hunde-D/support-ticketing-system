@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useTransition, useCallback } from "react";
 import { Button } from "../ui/button";
 import { CardContent } from "../ui/card";
 import { Input } from "../ui/input";
@@ -22,10 +22,12 @@ import { PasswordInput } from "../ui/password-input";
 import { Loader2 } from "lucide-react";
 import { login } from "@/actions/auth-action";
 import { useRouter } from "next/navigation";
+import { getQueryClient } from "@/lib/query-client/get-query-client";
 
 export const LoginForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const queryClient = getQueryClient();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -35,25 +37,27 @@ export const LoginForm = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof loginSchema>) {
-    if (isLoading) return;
-
-    setIsLoading(true);
-
-    try {
-      const result = await login(values.email, values.password);
-
-      if (result.success) {
-        router.push("/");
-        toast.success("Login successful!");
-      }
-    } catch (error) {
-      toast.error("Invalid email or password");
-      console.error("Login submission error:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const onSubmit = useCallback(
+    (values: z.infer<typeof loginSchema>) => {
+      startTransition(async () => {
+        try {
+          const result = await login(values.email, values.password);
+          if (result.success) {
+            queryClient.invalidateQueries({ queryKey: ["user"] });
+            router.push("/");
+            await queryClient.refetchQueries({ stale: true });
+            toast.success("Login successful!");
+          } else {
+            toast.error("Invalid email or password");
+          }
+        } catch (error) {
+          console.error("Login submission error:", error);
+          toast.error("Something went wrong. Please try again.");
+        }
+      });
+    },
+    [queryClient, router]
+  );
 
   return (
     <CardContent className="pt-6">
@@ -70,8 +74,7 @@ export const LoginForm = () => {
                     placeholder="m@example.com"
                     type="email"
                     autoComplete="email"
-                    disabled={isLoading}
-                    aria-describedby="email-description"
+                    disabled={isPending}
                     {...field}
                   />
                 </FormControl>
@@ -90,7 +93,6 @@ export const LoginForm = () => {
                   <Link
                     href="/forgot-password"
                     className="text-sm text-primary hover:underline"
-                    tabIndex={0}
                   >
                     Forgot password?
                   </Link>
@@ -98,7 +100,7 @@ export const LoginForm = () => {
                 <FormControl>
                   <PasswordInput
                     autoComplete="current-password"
-                    disabled={isLoading}
+                    disabled={isPending}
                     {...field}
                   />
                 </FormControl>
@@ -106,13 +108,13 @@ export const LoginForm = () => {
               </FormItem>
             )}
           />
+
           <Button
             type="submit"
             className="w-full rounded-md bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:opacity-90"
-            disabled={isLoading}
-            aria-live="polite"
+            disabled={isPending}
           >
-            {isLoading ? (
+            {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 <span>Logging in...</span>

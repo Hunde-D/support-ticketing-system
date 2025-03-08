@@ -9,6 +9,8 @@ const Header = () => {
   const { data: user, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: getUser,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
   });
   return (
     <div className="flex items-center justify-between rounded-lg bg-gray-800 p-4 text-white h-24 max-sm:hidden">

@@ -22,6 +22,7 @@ export function Login({ className, ...props }: React.ComponentProps<"div">) {
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
+        {/* log in form */}
         <LoginForm />
         <CardFooter className="flex flex-col space-y-4">
           <DemoCredentials />

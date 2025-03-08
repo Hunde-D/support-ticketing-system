@@ -23,10 +23,12 @@ import { PasswordInput } from "../ui/password-input";
 import { signupSchema } from "@/lib/types";
 import { signup } from "@/actions/auth-action";
 import { useRouter } from "next/navigation";
+import { getQueryClient } from "@/lib/query-client/get-query-client";
 
 function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const queryClient = getQueryClient();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -39,13 +41,12 @@ function SignupForm() {
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
     if (isLoading) return;
-
     setIsLoading(true);
-
     try {
       const result = await signup(values);
 
       if (result.success) {
+        queryClient.invalidateQueries({ queryKey: ["user"] });
         router.push("/");
         toast.success("Signup successful!");
       }
