@@ -21,11 +21,12 @@ import {
 } from "./ui/form";
 import { PasswordInput } from "./ui/password-input";
 import { signupSchema } from "@/lib/types";
-import { useAuth } from "@/context/auth-context";
+import { signup } from "@/actions/auth-action";
+import { useRouter } from "next/navigation";
 
 function SignupForm() {
-  const { signup } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -38,17 +39,19 @@ function SignupForm() {
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
     if (isLoading) return;
+
     setIsLoading(true);
+
     try {
-      await signup(values);
-      toast.success("Account created successfully!");
+      const result = await signup(values);
+
+      if (result.success) {
+        router.push("/");
+        toast.success("Signup successful!");
+      }
     } catch (error) {
-      console.error("Registration error:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to create account. Please try again."
-      );
+      toast.error("Signup failed");
+      console.error("Signup submission error:", error);
     } finally {
       setIsLoading(false);
     }

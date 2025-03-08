@@ -21,14 +21,13 @@ import { toast } from "sonner";
 import { PasswordInput } from "./ui/password-input";
 import { Loader2 } from "lucide-react";
 import { login } from "@/actions/auth-action";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 // import { loginUser } from "@/actions/auth-actions";
 // import { useAuth } from "@/context/auth-context";
 
 export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  // const { login } = useAuth();
-  // const router = useRouter();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -40,17 +39,19 @@ export const LoginForm = () => {
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     if (isLoading) return;
+
     setIsLoading(true);
+
     try {
-      await login(values.email, values.password);
-      toast.success("Login successful!");
+      const result = await login(values.email, values.password);
+
+      if (result.success) {
+        router.push("/");
+        toast.success("Login successful!");
+      }
     } catch (error) {
-      console.error("Login error:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to login. Please try again."
-      );
+      toast.error("Invalid email or password");
+      console.error("Login submission error:", error);
     } finally {
       setIsLoading(false);
     }

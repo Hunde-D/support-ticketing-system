@@ -23,7 +23,7 @@ function LogoutButton() {
       onClick={handleLogout}
       disabled={isLoading}
       aria-label="Logout"
-      className="border hover:bg-muted"
+      className="border hover:bg-muted hover:text-primary"
     >
       {isLoading ? (
         <Loader2 className="h-4 w-4 animate-spin" />

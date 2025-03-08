@@ -29,7 +29,7 @@ export function Signup({ className, ...props }: React.ComponentProps<"div">) {
               href="/login"
               className="text-purple-600 underline-offset-4 hover:underline"
             >
-              Sign up
+              Log in
             </Link>
           </div>
         </CardFooter>
