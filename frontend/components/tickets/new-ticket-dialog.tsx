@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,9 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Textarea } from "./ui/textarea";
-import { Input } from "./ui/input";
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -24,7 +24,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
+} from "@/components/ui/form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ticketSchema } from "@/lib/types";
 import { createTicket } from "@/actions/ticket-action";

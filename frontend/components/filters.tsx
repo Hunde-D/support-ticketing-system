@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AddNew } from "./new-ticket-dialog";
+import { AddNew } from "@/components/tickets/new-ticket-dialog";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { ThemeToggle } from "./theme-toggle";

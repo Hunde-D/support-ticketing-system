@@ -7,8 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import DemoCredentials from "./demo-credentials";
-import { LoginForm } from "./login-form";
+import DemoCredentials from "./auth/demo-credentials";
+import { LoginForm } from "./auth/login-form";
 
 export function Login({ className, ...props }: React.ComponentProps<"div">) {
   return (

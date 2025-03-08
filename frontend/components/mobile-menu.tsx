@@ -2,9 +2,14 @@
 
 import { useState } from "react";
 import { Menu } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import UserAvatar from "./user-avatar";
-import LogoutButton from "./logout";
+import LogoutButton from "./auth/logout";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/actions/auth-action";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -26,6 +31,7 @@ export function MobileMenu() {
         </button>
       </SheetTrigger>
       <SheetContent side="left" className="w-[280px] sm:w-[350px]">
+        <SheetTitle></SheetTitle>
         <div className="flex flex-col h-full">
           <div className="flex flex-col space-y-6 mt-6">
             <div className="flex items-center gap-4 p-4 rounded-lg">

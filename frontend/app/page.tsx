@@ -2,8 +2,10 @@ import { getTickets } from "@/actions/ticket-action";
 import Filters from "@/components/filters";
 import Header from "@/components/header";
 import { MobileMenu } from "@/components/mobile-menu";
-import TicketItem from "@/components/ticket-item";
-import TicketStatus from "@/components/tickets-status";
+import { TicketItemSkeleton } from "@/components/skeletons/ticket-skeleton";
+import { TicketStatusSkeleton } from "@/components/skeletons/tickets-status-skeleton";
+import TicketItem from "@/components/tickets/ticket-item";
+import TicketStatus from "@/components/tickets/tickets-status";
 import { getQueryClient } from "@/lib/query-client/get-query-client";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
@@ -29,19 +31,21 @@ export default async function TicketPage() {
               <MobileMenu />
             </div>
           </div>
-          <Suspense fallback={<div>loading</div>}>
+          {/* ticket status */}
+          <Suspense fallback={<TicketStatusSkeleton />}>
             <TicketStatus />
           </Suspense>
         </div>
         <div className="grid content-start space-y-4 h-full overflow-hidden">
-          {/* <Suspense fallback={<div>loading</div>}> */}
+          {/* header */}
           <Header />
-          {/* </Suspense> */}
+          {/* filters */}
           <Suspense fallback={<div>loading</div>}>
             <Filters />
           </Suspense>
           <div className=" h-full overflow-y-auto  grid gap-4">
-            <Suspense fallback={<div>loading</div>}>
+            {/* ticket */}
+            <Suspense fallback={<TicketItemSkeleton />}>
               <TicketItem />
             </Suspense>
           </div>

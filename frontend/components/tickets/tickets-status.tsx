@@ -1,6 +1,6 @@
 "use client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Card } from "./ui/card";
+import { Card } from "../ui/card";
 import { getTickets } from "@/actions/ticket-action";
 import { Ticket } from "@/lib/types";
 

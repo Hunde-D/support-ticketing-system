@@ -1,5 +1,5 @@
 "use client";
-import LogoutButton from "./logout";
+import LogoutButton from "./auth/logout";
 import UserAvatar from "./user-avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUser } from "@/actions/auth-action";

@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { CardContent } from "./ui/card";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { Button } from "../ui/button";
+import { CardContent } from "../ui/card";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -18,8 +18,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { PasswordInput } from "./ui/password-input";
+} from "../ui/form";
+import { PasswordInput } from "../ui/password-input";
 import { signupSchema } from "@/lib/types";
 import { signup } from "@/actions/auth-action";
 import { useRouter } from "next/navigation";

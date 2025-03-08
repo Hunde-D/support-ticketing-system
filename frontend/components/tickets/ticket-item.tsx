@@ -1,8 +1,8 @@
 "use client";
 import { Fragment, useState } from "react";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { Badge } from "./ui/badge";
-import { Card, CardContent } from "./ui/card";
+import { Badge } from "../ui/badge";
+import { Card, CardContent } from "../ui/card";
 import { getTickets, updateTicket } from "@/actions/ticket-action";
 import { Ticket } from "@/lib/types";
 import { TicketDialog } from "./ticket-dialog";

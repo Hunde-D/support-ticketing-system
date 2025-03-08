@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { CardContent } from "./ui/card";
-import { Input } from "./ui/input";
+import { Button } from "../ui/button";
+import { CardContent } from "../ui/card";
+import { Input } from "../ui/input";
 import Link from "next/link";
 import {
   Form,
@@ -12,18 +12,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
+} from "../ui/form";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
 import { toast } from "sonner";
-import { PasswordInput } from "./ui/password-input";
+import { PasswordInput } from "../ui/password-input";
 import { Loader2 } from "lucide-react";
 import { login } from "@/actions/auth-action";
 import { useRouter } from "next/navigation";
-// import { loginUser } from "@/actions/auth-actions";
-// import { useAuth } from "@/context/auth-context";
 
 export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);

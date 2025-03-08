@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import SignupForm from "./signup-form";
+import SignupForm from "./auth/signup-form";
 
 export function Signup({ className, ...props }: React.ComponentProps<"div">) {
   return (
